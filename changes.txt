@@ -1,0 +1,4 @@
+Ver Beta 1.00:
+    - Added basic music operations(play,pause,next and previous song)
+    - Loads in metadata of the song, if exists
+    - Beta version
