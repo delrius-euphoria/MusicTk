@@ -5,7 +5,7 @@ from PIL import Image, ImageTk, ImageFilter, ImageDraw, ImageFont
 
 
 class Player(tk.Frame):
-    def __init__(self,root,track='',backup_track='',artist='',album=None,art=None,playfunc=None,stopfunc=None,nextfunc=None,previousfunc=None,backfunc=None,forwardfunc=None,bindfunc=None,**kwargs):
+    def __init__(self,root,track='',backup_track='',artist='',album=None,art=None,playfunc=None,stopfunc=None,nextfunc=None,previousfunc=None,backfunc=None,forwardfunc=None,bindfunc=None,theme='light',**kwargs):
         tk.Frame.__init__(self,root,**kwargs)
 
         pyglet.font.add_file("fonts/Montserrat-SemiBold.ttf")
@@ -24,40 +24,37 @@ class Player(tk.Frame):
         self.artist       = artist
         self.album        = album
         self.count        = 0
+        self.theme        = theme
         self.font_headers = ('Poppins SemiBold',15)
 
-        self.h,self.w       = self.winfo_screenheight(),self.winfo_screenwidth()
-        self.dy_w,self.dy_h = int(self.w/38.4),int(self.h/21.6)
-        self.five00_w = self.w/3.84
-        self.five00_h = self.h/2.16
-        self.padx_5   = self.w/384
-        self.padx_10  = self.w/192
-        self.padx_100 = self.w/19.2
-        self.pady_5   = self.h/216
-        self.pady_10  = self.h/108
-        self.pady_15  = self.h/72
-        self.rf_w     = self.w/3.80
-        self.rf_h     = self.h/1.44
+        self.h,self.w  = self.winfo_screenheight(),self.winfo_screenwidth()
+        self.previous  = ImageTk.PhotoImage(Image.open('images/previous.png').resize((50,50),Image.ANTIALIAS))
+        self.backwards = ImageTk.PhotoImage(Image.open('images/backwards.png').resize((50,50),Image.ANTIALIAS))
+        self.forwards  = ImageTk.PhotoImage(Image.open('images/forwards.png').resize((50,50),Image.ANTIALIAS))
+        self.next      = ImageTk.PhotoImage(Image.open('images/next.png').resize((50,50),Image.ANTIALIAS))
+        self.notfound  = ImageTk.PhotoImage(Image.open('images/notfound.png').resize((500,499),Image.ANTIALIAS))
+        self.playpause = ImageTk.PhotoImage(Image.open('images/play pause.png').resize((50,50),Image.ANTIALIAS))
+        self.stop      = ImageTk.PhotoImage(Image.open('images/rewind.png').resize((50,50),Image.ANTIALIAS))
 
-        self.previous  = ImageTk.PhotoImage(Image.open('images/previous.png').resize((self.dy_w,self.dy_h),Image.ANTIALIAS))
-        self.backwards = ImageTk.PhotoImage(Image.open('images/backwards.png').resize((self.dy_w,self.dy_h),Image.ANTIALIAS))
-        self.forwards  = ImageTk.PhotoImage(Image.open('images/forwards.png').resize((self.dy_w,self.dy_h),Image.ANTIALIAS))
-        self.next      = ImageTk.PhotoImage(Image.open('images/next.png').resize((self.dy_w,self.dy_h),Image.ANTIALIAS))
-        self.notfound  = ImageTk.PhotoImage(Image.open('images/notfound.png').resize((int(self.five00_w),int(self.five00_h)),Image.ANTIALIAS))
-        self.playpause = ImageTk.PhotoImage(Image.open('images/play pause.png').resize((self.dy_w,self.dy_h),Image.ANTIALIAS))
-        self.stop      = ImageTk.PhotoImage(Image.open('images/rewind.png').resize((self.dy_w,self.dy_h),Image.ANTIALIAS))
+        self.previous_dark  = ImageTk.PhotoImage(Image.open('images/previous_dark.png').resize((50,50),Image.ANTIALIAS))
+        self.backwards_dark = ImageTk.PhotoImage(Image.open('images/backwards_dark.png').resize((50,50),Image.ANTIALIAS))
+        self.forwards_dark  = ImageTk.PhotoImage(Image.open('images/forwards_dark.png').resize((50,50),Image.ANTIALIAS))
+        self.next_dark      = ImageTk.PhotoImage(Image.open('images/next_dark.png').resize((50,50),Image.ANTIALIAS))
+        self.notfound_dark  = ImageTk.PhotoImage(Image.open('images/notfound_dark.png').resize((500,499),Image.ANTIALIAS))
+        self.playpause_dark = ImageTk.PhotoImage(Image.open('images/play pause_dark.png').resize((50,50),Image.ANTIALIAS))
+        self.stop_dark      = ImageTk.PhotoImage(Image.open('images/rewind_dark.png').resize((50,50),Image.ANTIALIAS))
 
         self.img_label = tk.Label(self)
-        self.img_label.grid(row=0,column=0,columnspan=4,pady=self.pady_10)
+        self.img_label.grid(row=0,column=0,columnspan=4,pady=10)
 
         self.title_label = tk.Label(self,text=self.track,font=self.font_headers)
-        self.title_label.grid(row=1,column=0,columnspan=4,pady=self.pady_5)
+        self.title_label.grid(row=1,column=0,columnspan=4,pady=5)
 
         self.artist_label = tk.Label(self,text=self.artist,font=self.font_headers)
-        self.artist_label.grid(row=2,column=0,columnspan=4,pady=self.pady_5)
+        self.artist_label.grid(row=2,column=0,columnspan=4,pady=5)
 
         self.album_label = tk.Label(self,text=self.album,font=self.font_headers)
-        self.album_label.grid(row=3,column=0,columnspan=4,pady=self.pady_5)
+        self.album_label.grid(row=3,column=0,columnspan=4,pady=5)
 
         self.previous_button = ttk.Button(self,image=self.previous,command=self._previous)
         self.previous_button.grid(row=4,column=0)
@@ -71,6 +68,13 @@ class Player(tk.Frame):
         self.rewind_button = ttk.Button(self,image=self.stop,command=self._stop)
         self.rewind_button.grid(row=4,column=3)
 
+        self.img_btns  = [self.img_label,self.previous_button,self.playpause_button,self.next_button,self.rewind_button]
+        self.dark_img  = [self.notfound_dark,self.previous_dark,self.playpause_dark,self.next_dark,self.stop_dark]
+        self.light_img = [self.notfound,self.previous,self.playpause,self.next,self.stop]
+        
+        if self.theme == 'dark':
+            self.switch_images(self.theme)
+        
         if not art:
             self.img_label.config(image=self.notfound)
 
@@ -107,7 +111,10 @@ class Player(tk.Frame):
         
     def config(self,track='',album='',art=None,artist='',backup_track=''):
         if not art:
-            self.img_label.config(image=self.notfound)
+            if self.theme == 'dark':
+                self.img_label.config(image=self.notfound_dark)
+            else:
+                self.img_label.config(image=self.notfound)
         else:
             self.im_tk = ImageTk.PhotoImage(art)
             self.img_label.config(image=self.im_tk)
@@ -147,11 +154,17 @@ class Player(tk.Frame):
             else:
                 self.count = 0
         else:
-            self.img_label.config(image=self.notfound)
+            if self.theme == 'dark':
+                self.img_label.config(image=self.notfound_dark)
+            else:
+                self.img_label.config(image=self.notfound)
 
     def leave(self):
         if not self.art:
-            self.img_label.config(image=self.notfound)
+            if self.theme == 'dark':
+                self.img_label.config(image=self.notfound_dark)
+            else:
+                self.img_label.config(image=self.notfound)
         else:
             if self.count < len(self.ublr_im_lst):
                 self.img_label.config(image=self.ublr_im_lst[self.count])
@@ -186,6 +199,19 @@ class Player(tk.Frame):
             im_lst.append(art_blur)
         
         return im_lst
+
+    def switch_images(self,mode):
+        if mode == 'dark':
+            for img,btn in zip(self.dark_img,self.img_btns):
+                btn.config(image=img)
+        else:
+            for img,btn in zip(self.light_img,self.img_btns):
+                btn.config(image=img)
+        
+        self.theme = mode
+        if self.art:
+            self.img = ImageTk.PhotoImage(self.art)
+            self.img_label.config(image=self.img)
 
 steps = '''Step 1: Make sure your songs files are in the form of Artist - Song Name.
 Step 2: Make a folder for the output of new song files.
