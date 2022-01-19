@@ -13,5 +13,5 @@ Ver 1.00
 Ver Beta 1.5
     - Added dark mode
     - Supports mini player for minimal playback
-    - Stores user prefrences for a better user experience
+    - Stores user preferences for a better user experience
     - Optimized performance and bug fixes!
