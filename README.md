@@ -4,6 +4,6 @@ A simple music player. Supports basic functionalities of a music player and show
  Examples on a Window 11:
  ![Example](https://github.com/delrius-euphoria/MusicTk/blob/main/musictk/images/example.png?raw=True)
  
- ![Example](https://github.com/delrius-euphoria/MusicTk/blob/main/musictk/images/example%203.png?raw=True)
+ ![Example](https://github.com/delrius-euphoria/MusicTk/blob/main/musictk/images/example%202.png?raw=True)
  
- ![Example1](https://github.com/delrius-euphoria/MusicTk/blob/main/musictk/images/example%202.png?raw=True)
+ ![Example1](https://github.com/delrius-euphoria/MusicTk/blob/main/musictk/images/example%203.png?raw=True)
