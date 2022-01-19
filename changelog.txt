@@ -9,3 +9,9 @@ Ver 1.00
     - Added fading of blur to artwork
     - Added 1 theme
     - Out from beta
+
+Ver Beta 1.5
+    - Added dark mode
+    - Supports mini player for minimal playback
+    - Stores user prefrences for a better user experience
+    - Optimized performance and bug fixes!

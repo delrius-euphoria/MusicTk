@@ -1,0 +1,9 @@
+[app]
+app = "MusicTk"
+
+[app.settings]
+theme = "light"
+path = ""
+last_song_idx = 0
+last_song_name = ""
+ismini = false

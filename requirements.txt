@@ -2,3 +2,5 @@ Pillow
 mutagen
 pygame
 pyglet
+toml
+appdirs
