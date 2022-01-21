@@ -1,10 +1,12 @@
 import tkinter as tk
-import pyglet
 from tkinter import ttk
+
+import pyglet
 from PIL import Image, ImageTk, ImageFilter, ImageDraw, ImageFont
 
 
 class Player(tk.Frame):
+
     def __init__(self, root, track='', backup_track='', artist='', album=None,
                  art=None, playfunc=None, stopfunc=None, nextfunc=None,
                  previousfunc=None, backfunc=None, forwardfunc=None,
@@ -190,9 +192,12 @@ class Player(tk.Frame):
             artist = self._resize(30, str(artist))
             self.artist_label.config(text=artist)
 
-        self.blur_im_lst = self.__create_hover_lst(art, track) if art else None
-        self.ublr_im_lst = self.blur_im_lst[::-1] if self.blur_im_lst is not \
-            None else None
+        if art:
+            self.blur_im_lst = self.__create_hover_lst(art, track)
+            self.ublr_im_lst = self.blur_im_lst[::-1]
+        else:
+            self.ublr_im_lst = None
+
         self.art = art
 
         self.img_label.bind('<Enter>', lambda e: self.enter())
